@@ -41,8 +41,11 @@ def filterMovie(url):
             scoreStr = re.findall(r"评分 (.+?)/10", td.text)
             if (len(scoreStr) > 0):
                 try:
+                    ##正则niubi的同学可以用正则表达式搞定
+                    scoreStr[0]=scoreStr[0].replace(',','.')
+                    scoreStr[0] = scoreStr[0].replace('Ratings:', '')
                     score = float(scoreStr[0])
-                    if (score > 8):
+                    if (score > 9):
                         name = nameA.text
                         url = site + nameA['href']
                         print('url:', url)
@@ -52,6 +55,7 @@ def filterMovie(url):
                         movie = Movie(name, url, score, downloadLink)
                         resultList.append(movie)
                 except:
+                    print(scoreStr)
                     print('error !!')
     return resultList
 
@@ -88,7 +92,7 @@ def downloadMovice(url,fileName):
     urllib.request.urlretrieve(url,fileName);
 
 if __name__ == '__main__':
-    for index in range(10):
+    for index in range(165):
         index += 1
         url = 'http://www.dytt8.net/html/gndy/dyzz/list_23_' + \
               str(index) + '.html'
