@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup as bsp
 import urllib3
 import re
+import ftplib
 import urllib.request
 
 site = 'http://www.dytt8.net'
@@ -55,7 +56,6 @@ def filterMovie(url):
                         movie = Movie(name, url, score, downloadLink)
                         resultList.append(movie)
                 except:
-                    print(scoreStr)
                     print('error !!')
     return resultList
 
@@ -71,7 +71,8 @@ def saveInfo(movieList):
     fileObj = open('data.txt', 'a',encoding='utf-8')
     for movie in movieList:
         movie_str = str(movie)
-       ## downloadMovice(movie.link,movie.name)
+        #downloadMovice(movie.link,movie.name)
+        #analysisFtpUrl(movie.link);
         print('movie info:', movie_str)
         global lineNo
         fileObj.write('(' + str(lineNo) + ') ' + movie_str)
@@ -90,7 +91,18 @@ def getPageResource(url):
 ## 只能下http打头的 在线视频
 def downloadMovice(url,fileName):
     urllib.request.urlretrieve(url,fileName);
-
+def analysisFtpUrl(url):
+    if url is not None:
+        print(url)
+        user = re.findall(r"ftp://(.+?)@", url)[0]
+        user=str(user)
+        name=user.split(':',1)
+        ftpname=name[0]
+        ftppass = name[1]
+        host=re.findall(r"@(.+?):",url)[0]
+        user.rsplit()
+        port = re.findall(":([0-9]+)", url)[0]
+        print("ftphost:\t%s ftpname:\t%s ftppass:\t%s ftpport:\t%s" ,host,ftpname,ftppass,port)
 if __name__ == '__main__':
     for index in range(165):
         index += 1
